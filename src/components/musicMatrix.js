@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import MusicSquare from './musicSquare';
-import { musicFrequencies } from './musicalKeyFrequencies'
+import { musicFrequencies,
+  cNotes, cSharpNotes, dNotes, eFlatNotes, eNotes, fNotes,
+  fSharpNotes, gNotes, gSharpNotes, aNotes, bFlatNotes, bNotes,
+  aColor, bFlatColor, bColor, cColor, cSharpColor, dColor, eFlatColor, eColor, fColor, fSharpColor, gColor, gSharpColor
+  } from './musicalKeyFrequencies'
+
 
 
 

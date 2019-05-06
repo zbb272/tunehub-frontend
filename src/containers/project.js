@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import MusicMatrix from '../components/musicMatrix'
+import { musicFrequencies,
+  cNotes, cSharpNotes, dNotes, eFlatNotes, eNotes, fNotes,
+  fSharpNotes, gNotes, gSharpNotes, aNotes, bFlatNotes, bNotes,
+  aColor, bFlatColor, bColor, cColor, cSharpColor, dColor, eFlatColor, eColor, fColor, fSharpColor, gColor, gSharpColor,
+  findColor
+} from '../components/musicalKeyFrequencies'
 
 let intervalTimer;
 
@@ -19,14 +25,15 @@ class Project extends Component {
   }
 
   playNoteColumn = (noteColumnNum) => {
-    console.log(noteColumnNum)
     let noteColumn = this.state.notes.filter(note => note.x === noteColumnNum);
-    console.log(noteColumn);
+
     noteColumn.forEach(note => {
       this.playNote(note.frequency);
-      note.bc = "red";
+      note.bc = "rgba(0, 0, 0, 0.3)";
     });
-    noteColumn.forEach(note => setTimeout(() => note.bc = "black", 500));
+    noteColumn.forEach(note => {
+      setTimeout(() => note.bc = findColor(note.frequency), 500)
+    });
   }
 
   playNote = (frequency) => {
@@ -41,16 +48,11 @@ class Project extends Component {
   }
 
   noteSelectedHandler = (note) => {
-    console.log(note);
     note.selected = !note.selected;
-    let newBc = note.selected ? "black" : "white";
+    let newBc = note.selected ? findColor(note.frequency) : "white";
     note.bc = newBc;
-    console.log(note)
 
-    // this.setState({
-    //   selected: !this.state.selected,
-    //   bc: newBc,
-    // })
+
     this.playNote(note.frequency)
     if(note.selected){
       console.log(note);
@@ -101,7 +103,8 @@ class Project extends Component {
           <h5>Maker of project with link</h5>
           <h6>Stats about project here (# of contributors/likes etc)</h6>
           <div>
-            Tabs here:
+            Tabs here (note: add tab that creates an overlay grid with opacity layer between so you can lay down
+            notes over top chords):
             <span><button>MusicMatrix</button><button>Contributers</button></span>
             <div>
               Options for matrix(key, tempo etc)
@@ -118,6 +121,7 @@ class Project extends Component {
             </div>
             <MusicMatrix notes={this.state.notes} noteSelectedHandler={this.noteSelectedHandler} />
             <div>
+              Add button to append another music matrix block so you can add more to a project
               <button onClick={this.playButtonHandler}>Play</button>
               <button>Submit</button>
             </div>

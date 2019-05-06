@@ -1,4 +1,23 @@
 import React, { Component } from 'react';
+import ProjectCard from  '../components/projectCard';
+import ContributionCard from  '../components/contributionCard';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  button: {
+    margin: theme.spacing.unit,
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+});
 
 class Dashboard extends Component {
   constructor(){
@@ -6,21 +25,35 @@ class Dashboard extends Component {
   }
 
   render(){
-    return(
-      <div className="dashboardPageContainer">
-        <div>This is a dashboard page</div>
-        <div>
-          <div>
-            two columns here limited in size. one their current projects, one their contributions
-          </div>
-          <div>
-            bottom block here featuring different projects people are working on
-          </div>
-        </div>
-      </div>
+    const { classes, userObj } = this.props;
 
+    return(
+      <div className={classes.root}>
+        <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <h1>Dashboard for {userObj.username}</h1>
+          </Grid>
+          <Grid item xs={6}>
+            <h2>My Projects</h2>
+              <Button variant="contained" className={classes.button}>
+                Create New Project
+              </Button>
+            {userObj.projects.map(proj => <ProjectCard projObj={proj} />)}
+          </Grid>
+          <Grid item xs={6}>
+            <h2>My Contributions</h2>
+            {userObj.contributions.map(cont => <ContributionCard contributionObj={cont} />)}
+          </Grid>
+          <Grid item xs={12}>
+            <div>
+              bottom block here featuring different projects people are working on
+            </div>
+          </Grid>
+
+        </Grid>
+      </div>
     )
   }
 }
 
-export default Dashboard;
+export default withStyles(styles)(Dashboard);
