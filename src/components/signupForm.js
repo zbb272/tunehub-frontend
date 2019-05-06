@@ -40,17 +40,18 @@ const styles = {
   }
 };
 
-class LoginForm extends React.Component {
+class SignupForm extends React.Component {
   constructor(){
     super();
   }
 
   render(){
-    const { classes, submissionEventHandler, usernameChangeHandler, passwordChangeHandler, passwordConfirmChangeHandler, signupEventHandler } = this.props;
+    const { classes, submissionEventHandler, usernameChangeHandler, passwordChangeHandler, passwordConfirmChangeHandler } = this.props;
     return(
       <React.Fragment>
         <Card className={classes.card}>
-          <h2>Log in</h2>
+          <h2>Sign up</h2>
+          <h5>Fill in the form below to start using tunehub</h5>
           <form className={classes.container} noValidate autoComplete="off" onSubmit={submissionEventHandler}>
             <TextField
               required
@@ -84,9 +85,6 @@ class LoginForm extends React.Component {
               onChange={passwordConfirmChangeHandler}
             />
             <br/>
-            <CardActions>
-              <Button size="small" onClick={signupEventHandler}>Create new user</Button>
-            </CardActions>
             <Button variant="contained" type="Submit" className={classes.button}>
               Submit
             </Button>
@@ -97,4 +95,4 @@ class LoginForm extends React.Component {
   }
 }
 
-export default withStyles(styles)(LoginForm);
+export default withStyles(styles)(SignupForm);

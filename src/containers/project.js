@@ -12,14 +12,15 @@ let intervalTimer;
 const ms = 3;
 
 class Project extends Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
+    let latestCont = props.projObj.contributions.find(cont => cont.id === props.projObj.latest_contribution)
     this.state = {
-      notes: [],
+      notes: latestCont.notes,
       noteColumnNum: 0,
-      contributions: [],
-      owner: "",
-      name: "",
+      contributions: props.projObj.contributions,
+      owner: props.projObj.user.username,
+      name: props.projObj.name,
       playing: false,
     }
   }
@@ -96,12 +97,9 @@ class Project extends Component {
   render(){
     return(
       <div className="projectPageContainer">
-        <div>This is a project</div>
-        <div>
-          Container for MusicMatrix
-          <h1>Title of Project Here</h1>
-          <h5>Maker of project with link</h5>
-          <h6>Stats about project here (# of contributors/likes etc)</h6>
+          <h1>{this.state.name}</h1>
+          <h5>Project created by: {this.state.owner} (add link)</h5>
+          <h6>There have been {this.state.contributions.length} contributions to this project</h6>
           <div>
             Tabs here (note: add tab that creates an overlay grid with opacity layer between so you can lay down
             notes over top chords):
@@ -127,7 +125,6 @@ class Project extends Component {
             </div>
           </div>
         </div>
-      </div>
 
     )
   }

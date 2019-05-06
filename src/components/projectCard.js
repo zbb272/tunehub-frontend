@@ -39,7 +39,7 @@ class ProjectCard extends React.Component {
   }
 
   render(){
-    const { classes, projObj } = this.props;
+    const { classes, projObj, viewProjectEventHandler} = this.props;
     return(
       <React.Fragment>
         <Card className={classes.card}>
@@ -53,7 +53,7 @@ class ProjectCard extends React.Component {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" className={classes.projectButton}>View Project</Button>
+            <Button size="small" className={classes.projectButton} onClick={() => viewProjectEventHandler(projObj)}>View Project</Button>
           </CardActions>
         </Card>
       </React.Fragment>
