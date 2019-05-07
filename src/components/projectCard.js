@@ -40,6 +40,7 @@ class ProjectCard extends React.Component {
 
   render(){
     const { classes, projObj, viewProjectEventHandler} = this.props;
+    let numPendingCon = (projObj.contributions.filter(con => con.pending === true)).length
     return(
       <React.Fragment>
         <Card className={classes.card}>
@@ -49,6 +50,10 @@ class ProjectCard extends React.Component {
             </Typography>
             <Typography component="p">
               Number of Contributions: {projObj.contributions.length}
+              <br />
+            </Typography>
+            <Typography component="p">
+              Pending Contributions: {numPendingCon}
               <br />
             </Typography>
           </CardContent>

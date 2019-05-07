@@ -6,6 +6,7 @@ import { musicFrequencies,
   aColor, bFlatColor, bColor, cColor, cSharpColor, dColor, eFlatColor, eColor, fColor, fSharpColor, gColor, gSharpColor,
   findColor
 } from '../components/musicalKeyFrequencies'
+import { Redirect } from 'react-router-dom';
 
 let intervalTimer;
 
@@ -94,37 +95,40 @@ class Project extends Component {
     }
   }
 
+  viewPendingContributionsHandler = () => {
+
+  }
+
   render(){
     return(
       <div className="projectPageContainer">
-          <h1>{this.state.name}</h1>
-          <h5>Project created by: {this.state.owner} (add link)</h5>
-          <h6>There have been {this.state.contributions.length} contributions to this project</h6>
-          <div>
-            Tabs here (note: add tab that creates an overlay grid with opacity layer between so you can lay down
-            notes over top chords):
-            <span><button>MusicMatrix</button><button>Contributers</button></span>
+            <h1>{this.state.name}</h1>
+            <h5>Project created by: {this.state.owner} (add link)</h5>
+            <h6>There have been {this.state.contributions.length} contributions to this project</h6>
             <div>
-              Options for matrix(key, tempo etc)
-              <label>Key:</label>
-              <select>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
-                <option value="E">E</option>
-                <option value="F">F</option>
-                <option value="G">G</option>
-              </select>
+              <span><button>MusicMatrix</button><button>Contributers</button><button onClick={this.viewPendingContributionsHandler}>Pending Contributions</button></span>
+              <div>
+                Options for matrix(key, tempo etc)
+                <label>Key:</label>
+                <select>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                  <option value="E">E</option>
+                  <option value="F">F</option>
+                  <option value="G">G</option>
+                </select>
+              </div>
+              <MusicMatrix notes={this.state.notes} noteSelectedHandler={this.noteSelectedHandler} />
+              <div>
+                Add button to append another music matrix block so you can add more to a project
+                <button onClick={this.playButtonHandler}>Play</button>
+                <button>Submit</button>
+              </div>
             </div>
-            <MusicMatrix notes={this.state.notes} noteSelectedHandler={this.noteSelectedHandler} />
-            <div>
-              Add button to append another music matrix block so you can add more to a project
-              <button onClick={this.playButtonHandler}>Play</button>
-              <button>Submit</button>
-            </div>
-          </div>
-        </div>
+           </div>
+
 
     )
   }

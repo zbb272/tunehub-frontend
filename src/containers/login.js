@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SignupForm from '../components/signupForm';
 import LoginForm from '../components/loginForm';
+import { Redirect } from 'react-router-dom';
 
 class Login extends Component {
   constructor(){
@@ -71,7 +72,17 @@ class Login extends Component {
             usernameChangeHandler={this.usernameChangeHandler}
             passwordChangeHandler={this.passwordChangeHandler}
             passwordConfirmChangeHandler={this.passwordConfirmChangeHandler}
-            signupEventHandler={this.signupEventHandler}/> }
+            signupEventHandler={this.signupEventHandler}/>
+        }
+        {this.props.isAuthenticated ?
+          <Redirect
+            to={{
+              pathname: "/dashboard",
+              state: { from: "" }
+            }}
+          />
+          : null
+        }
 
         </div>
       </div>

@@ -112,7 +112,7 @@ class NavBar extends Component {
                 />
               </div>
               <div className={classes.shoppingCartIcon}>
-                <ButtonBase >
+                <ButtonBase onClick={this.props.profileIconClickHandler}>
                   <AccountCircle />
                 </ButtonBase>
               </div>
