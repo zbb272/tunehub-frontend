@@ -77,5 +77,37 @@ export const gMChord = []
 export const gmChord = []
 export const gdChord = []
 
-export const notesInCKey  = [ cNotes[1], dNotes[1], eNotes[1], fNotes[1], gNotes[1], aNotes[1], bNotes[1]];
-export const triadsInCKey = [ cMChord,   dmChord,   emChord,   fMChord,   gMChord,   amChord, bdChord];
+export const notesInAMajorKey  = [ aNotes[1], bNotes[1], cSharpNotes[1], dNotes[1], eNotes[1], fSharpNotes[1], gSharpNotes[1]];
+export const triadsInAMajorKey = [ cMChord,   dmChord,   emChord,   fMChord,   gMChord,   amChord, bdChord];
+
+export const notesInBMajorKey  = [ bNotes[1], cSharpNotes[1], eFlatNotes[1], eNotes[1], fSharpNotes[1], gSharpNotes[1], bFlatNotes[1]];
+export const triadsInBMajorKey = [ cMChord,   dmChord,   emChord,   fMChord,   gMChord,   amChord, bdChord];
+
+export const notesInCMajorKey  = [ cNotes[1], dNotes[1], eNotes[1], fNotes[1], gNotes[1], aNotes[1], bNotes[1]];
+export const triadsInCMajorKey = [ cMChord,   dmChord,   emChord,   fMChord,   gMChord,   amChord, bdChord];
+
+export const notesInDMajorKey  = [ dNotes[1], eNotes[1], fSharpNotes[1], gNotes[1], aNotes[1], bNotes[1], cSharpNotes[1]];
+export const triadsInDMajorKey = [ cMChord,   dmChord,   emChord,   fMChord,   gMChord,   amChord, bdChord];
+
+export const notesInEMajorKey  = [ eNotes[1], fSharpNotes[1], gSharpNotes[1], aNotes[1], bNotes[1], cSharpNotes[1], eFlatNotes[1]];
+export const triadsInEMajorKey = [ cMChord,   dmChord,   emChord,   fMChord,   gMChord,   amChord, bdChord];
+
+export const notesInFMajorKey  = [ fNotes[1], gNotes[1], aNotes[1], bFlatNotes[1], cNotes[1], dNotes[1], eNotes[1]];
+export const triadsInFMajorKey = [ cMChord,   dmChord,   emChord,   fMChord,   gMChord,   amChord, bdChord];
+
+export const notesInGMajorKey  = [ gNotes[1], aNotes[1], bNotes[1], cNotes[1], dNotes[1], eNotes[1], fSharpNotes[1]];
+export const triadsInGMajorKey = [ cMChord,   dmChord,   emChord,   fMChord,   gMChord,   amChord, bdChord];
+
+export const allNotesInCMajorKey = () => {
+  let notes = [];
+  for(let i = 0; i < 6; i++){
+    notes.push(cNotes[i])
+    notes.push(dNotes[i])
+    notes.push(eNotes[i])
+    notes.push(fNotes[i])
+    notes.push(gNotes[i])
+    notes.push(aNotes[i])
+    notes.push(bNotes[i])
+  }
+  return notes;
+}

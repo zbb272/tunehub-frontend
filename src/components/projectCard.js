@@ -28,8 +28,11 @@ const styles = {
     marginBottom: 12,
   },
   projectButton: {
-    textAlign: "right",
     float: "right",
+  },
+  deleteButton:{
+    marginLeft: "60%",
+    textAlign: "right"
   }
 };
 
@@ -39,7 +42,7 @@ class ProjectCard extends React.Component {
   }
 
   render(){
-    const { classes, projObj, viewProjectEventHandler} = this.props;
+    const { classes, projObj, viewProjectEventHandler, deleteProjectEventHandler } = this.props;
     let numPendingCon = (projObj.contributions.filter(con => con.pending === true)).length
     return(
       <React.Fragment>
@@ -59,6 +62,7 @@ class ProjectCard extends React.Component {
           </CardContent>
           <CardActions>
             <Button size="small" className={classes.projectButton} onClick={() => viewProjectEventHandler(projObj)}>View Project</Button>
+            <Button size="small" className={classes.deleteButton} onClick={() => deleteProjectEventHandler(projObj)}>Delete</Button>
           </CardActions>
         </Card>
       </React.Fragment>

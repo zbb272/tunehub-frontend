@@ -13,13 +13,11 @@ let intervalTimer;
 
 const ms = 3;
 
-class Project extends Component {
+class Contribution extends Component {
   constructor(props){
     super(props)
     let latestCont = props.projObj.contributions.find(cont => cont.id === props.projObj.latest_contribution)
-    console.log(props.projObj)
     this.state = {
-      currentProjObj: props.projObj,
       notes: latestCont.notes,
       noteColumnNum: 0,
       contributions: props.projObj.contributions,
@@ -99,12 +97,10 @@ class Project extends Component {
     }
   }
 
-  saveButtonHandler = () => {
-    this.props.saveProjectEventHandler(this.state.notes)
-  }
-
-  viewPendingContributionsHandler = () => {
-
+  submitContributionHandler = () => {
+    this.props.contObj.notes_attributes = this.state.notes
+    console.log(this.props.contObj)
+    this.props.createNewContributionHandler(this.props.contObj)
   }
 
   handleKeyChangeSelector = (event) => {
@@ -122,34 +118,13 @@ class Project extends Component {
     })
   }
 
-  reassignPropsToState = () => {
-    let latestCont = this.props.projObj.contributions.find(cont => cont.id === this.props.projObj.latest_contribution)
-    console.log(this.props.projObj)
-    this.setState({
-      currentProjObj: this.props.projObj,
-      notes: latestCont.notes,
-      noteColumnNum: 0,
-      contributions: this.props.projObj.contributions,
-      owner: this.props.projObj.user.username,
-      name: this.props.projObj.name,
-      playing: false,
-      noteFrequcenies: notesInAMajorKey,
-    })
-  }
-
   render(){
-    console.log(this.props.projObj)
-    if(this.props.projObj !== this.state.currentProjObj){
-      this.reassignPropsToState();
-    }
-
     return(
       <div className="projectPageContainer">
-            <h1>{this.state.name}</h1>
+            <h1>New Contribution to {this.state.name}</h1>
             <h5>Project created by: {this.state.owner} (add link)</h5>
-            <h6>There have been {this.state.contributions.length} contributions to this project</h6>
             <div>
-              <span><button>MusicMatrix</button><button>Contributers</button><button onClick={this.viewPendingContributionsHandler}>Pending Contributions</button></span>
+              <span><button>MusicMatrix</button></span>
               <div>
                 Options for matrix(key, tempo etc)
                 <label>Key:</label>
@@ -163,12 +138,11 @@ class Project extends Component {
                   <option value="G">G</option>
                 </select>
               </div>
-              <MusicMatrix notes={this.state.notes} noteFrequcenies={this.state.noteFrequcenies} noteSelectedHandler={this.noteSelectedHandler} />
+              <MusicMatrix noteFrequcenies={this.state.noteFrequcenies} notes={this.state.notes} noteSelectedHandler={this.noteSelectedHandler} />
               <div>
                 Add button to append another music matrix block so you can add more to a project
                 <button onClick={this.playButtonHandler}>Play</button>
-                <button onClick={this.props.contributeButtonHandler}>Contribute</button>
-                <button onClick={this.saveButtonHandler}>Save</button>
+                <button onClick={this.submitContributionHandler}>Submit</button>
               </div>
             </div>
            </div>
@@ -178,4 +152,4 @@ class Project extends Component {
   }
 }
 
-export default Project;
+export default Contribution;

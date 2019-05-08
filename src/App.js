@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Project from './containers/project';
+import Contribution from './containers/contribution';
 import NavBar from './components/navBar';
 import Dashboard from './containers/dashboard';
 import Login from './containers/login';
@@ -18,21 +19,11 @@ class App extends React.Component {
     this.state = {
       currentUser: null,
       currentProject: null,
+      currentContribution: null,
       isAuthenticated: false,
       allProjects: [],
     }
   }
-
-  // componentDidMount(){
-  //   fetch(usersURL)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log(data)
-  //       // this.setState({
-  //       //   currentUser: data,
-  //       // })
-  //     })
-  // }
 
   componentDidMount(){
     this.checkLocalStorageForUser();
@@ -115,6 +106,8 @@ class App extends React.Component {
     fetch(projectsURL + `/${project.id}`)
       .then(res => res.json())
       .then(data => {
+        console.log(data)
+
         this.setState({
           currentProject: data
         })
@@ -139,13 +132,81 @@ class App extends React.Component {
         let newUser = {...this.state.currentUser}
         newUser.projects.push(data)
         newAllProjects.push(data);
+        this.saveUserToLocalStorage(newUser);
         this.setState({
           currentProject: data,
           currentUser: newUser,
           allProjects: newAllProjects,
         })
-        this.saveUserToLocalStorage(this.state.currentUser);
+
       })
+  }
+
+  createNewContributionHandler = (contObj) => {
+    console.log(contObj)
+    fetch(contributionsURL, {
+      method: "POST",
+      headers:{
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(contObj)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        let newUser = {...this.state.currentUser}
+        let newProj = {...this.state.currentProject}
+        newProj.contributions.push(data);
+        newProj.latest_contribution = data.id;
+        newUser.contributions.push(data);
+        newUser.projects.splice(newUser.projects.indexOf(this.state.currentProject), 1);
+        newUser.projects.push(newProj);
+        this.saveUserToLocalStorage(newUser);
+        console.log(newUser)
+        console.log(newProj)
+        this.updateProjectLatestContribution(newProj.id, newProj.latest_contribution)
+        this.setState({
+          currentProject: newProj,
+          currentUser: newUser,
+          currentContribution: null,
+        })
+
+      })
+  }
+
+  updateProjectLatestContribution = (projectId, latestContId) => {
+    fetch(projectsURL + `/${projectId}`, {
+      method: "PATCH",
+      headers:{
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({latest_contribution: latestContId})
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+
+        this.setState({
+          currentProject: data
+        })
+      })
+  }
+
+  deleteProjectEventHandler = (projObj) => {
+    console.log(projObj.id)
+
+    fetch(projectsURL + `/${projObj.id}`, {
+      method: "DELETE"
+    })
+    .then(res => res.json())
+    .then(data => {console.log(data)});
+    let newUser = {...this.state.currentUser}
+    newUser.projects.splice(newUser.projects.indexOf(projObj), 1);
+    this.setState({
+      currentUser: newUser,
+    });
+    this.saveUserToLocalStorage(this.state.currentUser);
+    // document.location.reload()
   }
 
   profileIconClickHandler = () => {
@@ -158,17 +219,62 @@ class App extends React.Component {
     }
   }
 
+  contributeButtonHandler = () => {
+    console.log("here")
+    let contObj = {
+      user_id: this.state.currentUser.id,
+      project_id: this.state.currentProject.id,
+      message: "",
+      approved: true,
+      pending: false,
+      notes_attributes: [],
+    }
+    this.setState({
+      currentContribution: contObj,
+    })
+  }
+
+  saveProjectEventHandler = (notesForProject) => {
+    console.log(notesForProject)
+    let updatedProject = {...this.state.currentProject};
+    updatedProject.notes = notesForProject;
+    fetch(projectsURL + `/${this.state.currentProject.id}`, {
+      method: "PATCH",
+      headers:{
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(updatedProject)
+    })
+      .then(res => res.json())
+      .then(data => {
+        let newUser = {...this.state.currentUser}
+        newUser.projects.splice(newUser.projects.indexOf(this.state.currentProject), 1);
+        newUser.projects.push(data)
+        this.setState({
+          currentProject: data,
+          currentUser: newUser,
+        })
+        this.saveUserToLocalStorage(newUser);
+      })
+  }
+
   render(){
+    console.log(this.state.currentUser);
+    console.log(this.state.currentProject);
+    console.log(this.state.currentContribution)
     return (
       <Router>
         <div className="App">
           <NavBar profileIconClickHandler={this.profileIconClickHandler}/>
 
           <Route exact path="/login" render={routerProps => <Login isAuthenticated={this.state.isAuthenticated} loginSubmit={this.loginSubmissionEventHandler} signUpSubmit={this.signupSubmissionEventHandler} {...routerProps}/> }/>
-            {this.state.currentUser !== null &&  this.state.currentProject !== null
-              ? <Project userObj={this.state.currentUser} projObj={this.state.currentProject}/>
-            : null }
-          <Route path={"/dashboard"} render={routerProps => <Dashboard isAuthenticated={this.state.isAuthenticated} userObj={this.state.currentUser} newProjectEventHandler={this.createNewProjectHandler} projectViewEventHandler={this.projectViewEventHandler} {...routerProps} />}/>
+          {this.state.currentUser !== null &&  this.state.currentProject !== null && this.state.currentContribution === null
+            ? <Project saveProjectEventHandler={this.saveProjectEventHandler} userObj={this.state.currentUser} projObj={this.state.currentProject} contributeButtonHandler={this.contributeButtonHandler}/>
+          : null }
+          {this.state.currentUser !== null &&  this.state.currentProject !== null && this.state.currentContribution !== null
+            ? <Contribution userObj={this.state.currentUser} projObj={this.state.currentProject} contObj={this.state.currentContribution} createNewContributionHandler={this.createNewContributionHandler}/>
+          : null }
+          <Route path={"/dashboard"} render={routerProps => <Dashboard isAuthenticated={this.state.isAuthenticated} userObj={this.state.currentUser} newProjectEventHandler={this.createNewProjectHandler} projectViewEventHandler={this.projectViewEventHandler} deleteProjectEventHandler={this.deleteProjectEventHandler} {...routerProps} />}/>
 
 
         </div>

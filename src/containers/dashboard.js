@@ -26,7 +26,7 @@ class Dashboard extends Component {
   }
 
   render(){
-    const { isAuthenticated, classes, userObj, newProjectEventHandler, projectViewEventHandler } = this.props;
+    const { isAuthenticated, classes, userObj, newProjectEventHandler, projectViewEventHandler, deleteProjectEventHandler } = this.props;
     return(
 
       <div className={classes.root}>
@@ -47,7 +47,7 @@ class Dashboard extends Component {
                 <Button variant="contained" className={classes.button} onClick={newProjectEventHandler}>
                   Create New Project
                 </Button>
-              {userObj.projects.map(proj => <ProjectCard projObj={proj} viewProjectEventHandler={projectViewEventHandler}/>)}
+              {userObj.projects.map(proj => <ProjectCard projObj={proj} deleteProjectEventHandler={deleteProjectEventHandler} viewProjectEventHandler={projectViewEventHandler}/>)}
             </Grid>
             <Grid item xs={6}>
               <h2>My Contributions</h2>
@@ -55,7 +55,7 @@ class Dashboard extends Component {
             </Grid>
             <Grid item xs={12}>
               <div>
-                bottom block here featuring different projects people are working on
+                
               </div>
             </Grid>
 

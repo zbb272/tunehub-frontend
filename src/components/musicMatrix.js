@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MusicSquare from './musicSquare';
-import { musicFrequencies,
+import { musicFrequencies, notesInCMAjorKey, allNotesInCMajorKey,
   cNotes, cSharpNotes, dNotes, eFlatNotes, eNotes, fNotes,
   fSharpNotes, gNotes, gSharpNotes, aNotes, bFlatNotes, bNotes,
   aColor, bFlatColor, bColor, cColor, cSharpColor, dColor, eFlatColor, eColor, fColor, fSharpColor, gColor, gSharpColor
@@ -10,10 +10,10 @@ import { musicFrequencies,
 
 
 const MusicMatrix = props => {
-
+    let noteFrequcenies = props.noteFrequcenies;
 
     let boxes = [];
-    for(let y = 0; y < 6; y++){
+    for(let y = 0; y < noteFrequcenies.length; y++){
       for(let x = 0; x < 12; x++){
         let noteFound = props.notes.find(note => note.x === x && note.y === y)
 
@@ -21,7 +21,7 @@ const MusicMatrix = props => {
           noteFound = {
             x: x,
             y: y,
-            frequency: musicFrequencies[y][x],
+            frequency: noteFrequcenies[y],
             selected: false,
             bc: "white",
           }
